@@ -1,0 +1,13 @@
+(use 'nstools.ns)
+(ns+ template
+  (:like anglican-user.worksheet))
+(defquery template
+  (let [x (sample (bernoulli 0.5))]
+    (observe (normal x 1) 0.8)
+    (predict x)))
+(def samples (doquery :lmh template nil))
+(def xs (map #(get % 'x) (map get-predicts (take 1000 samples))))
+(double (/ (reduce + xs) (count xs)))
+(plot/list-plot (sort xs) :joined true)
+And even visualize the pdf!
+
